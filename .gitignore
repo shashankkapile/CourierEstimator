@@ -52,3 +52,7 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+/.vs/CourierEstimator/DesignTimeBuild
+/.vs/CourierEstimator/FileContentIndex
+/.vs/CourierEstimator/v17
+/.vs/ProjectEvaluation
