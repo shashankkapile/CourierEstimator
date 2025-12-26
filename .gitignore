@@ -56,3 +56,4 @@ nunit-*.xml
 /.vs/CourierEstimator/FileContentIndex
 /.vs/CourierEstimator/v17
 /.vs/ProjectEvaluation
+/.vs/CourierEstimator/config/applicationhost.config

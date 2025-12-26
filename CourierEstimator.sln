@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierEstimator.App", "CourierEstimator.App\CourierEstimator.App.csproj", "{4A43F918-1776-4CA8-A6A4-20E8E8B01EBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CourierEstimator.App", "CourierEstimator.App\CourierEstimator.App.csproj", "{4A43F918-1776-4CA8-A6A4-20E8E8B01EBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierEstimator.Core", "CourierEstimator.Core\CourierEstimator.Core.csproj", "{D27BF1A6-B286-4F2A-AD5F-92EBDD34FE1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4A43F918-1776-4CA8-A6A4-20E8E8B01EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A43F918-1776-4CA8-A6A4-20E8E8B01EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A43F918-1776-4CA8-A6A4-20E8E8B01EBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D27BF1A6-B286-4F2A-AD5F-92EBDD34FE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D27BF1A6-B286-4F2A-AD5F-92EBDD34FE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D27BF1A6-B286-4F2A-AD5F-92EBDD34FE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D27BF1A6-B286-4F2A-AD5F-92EBDD34FE1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
