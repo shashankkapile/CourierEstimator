@@ -31,8 +31,8 @@ namespace CourierEstimator.Core.Services.Implementations
             }
 
             package.DeliveryCost = deliveryCost;
-            package.Discount = discount;
-            package.TotalCost = deliveryCost - discount;
+            package.Discount = (int) discount;
+            package.TotalCost = (int) (deliveryCost - discount);
         }
     }
 }

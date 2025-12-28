@@ -7,8 +7,8 @@
         public decimal Distance { get; set; }
         public string OfferCode { get; set; }
         public decimal DeliveryCost { get; set; }
-        public decimal Discount { get; set; }
-        public decimal TotalCost { get; set; }
+        public int Discount { get; set; }
+        public int TotalCost { get; set; }
 
         public int VehicleId { get; set; }
         public decimal DeliveryTime { get; set; }
