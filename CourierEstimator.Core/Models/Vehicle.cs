@@ -10,7 +10,7 @@ namespace CourierEstimator.Core.Models
     {
         public int Id { get; set; }
         public decimal MaxSpeed { get; set; }
-        public decimal MaxCapacity { get; set; }
+        public int MaxCapacity { get; set; }
         public decimal NextAvailableTime { get; set; }
     }
 

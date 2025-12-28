@@ -8,7 +8,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Starting the app");
+        //Console.WriteLine("Starting the app");
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -28,8 +28,8 @@ internal class Program
             return;
         }
 
-        decimal baseCost = decimal.Parse(packageMetadata[0]);
-        int packageCount = int.Parse(packageMetadata[1]);
+        var baseCost = decimal.Parse(packageMetadata[0]);
+        var packageCount = int.Parse(packageMetadata[1]);
 
         var packages = ReadPackages(packageCount);
         if (!packages.Any())
@@ -47,6 +47,7 @@ internal class Program
         var costSettings = provider.GetRequiredService<IOptions<CostSettings>>().Value;
         costSettings.BaseCost = baseCost;
 
+        Console.WriteLine();
         ProcessEstimations(provider, packages, vehicles);
 
         Console.Read();
@@ -74,7 +75,7 @@ internal class Program
             packages.Add(new Package
             {
                 Id = lineItems[0],
-                Weight = decimal.Parse(lineItems[1]),
+                Weight = int.Parse(lineItems[1]),
                 Distance = decimal.Parse(lineItems[2]),
                 OfferCode = lineItems[3]
             });
@@ -109,7 +110,7 @@ internal class Program
                 Id = i+1,
                 MaxCapacity = vehicleMaxCapacity,
                 MaxSpeed = vehicleMaxSpeed,
-                NextAvailableTime = 0m,
+                NextAvailableTime = 0,
             });
         }
         return vehicles;
@@ -126,22 +127,23 @@ internal class Program
 
     private static void ProcessEstimations(ServiceProvider provider, List<Package> packages, List<Vehicle> vehicles)
     {
-        Console.WriteLine("Estimating delivery cost");
+        //Console.WriteLine("Estimating delivery cost");
         var costEstimatorService = provider.GetRequiredService<ICostEstimatorService>();
         foreach (var package in packages)
         {
             costEstimatorService.CalculateCost(package);
-            Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost}");
+            //Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost}");
         }
 
         if (vehicles.Any())
         {
             var timeEstimatorService = provider.GetRequiredService<ITimeEstimatorService>();
-            Console.WriteLine("Estimating delivery time");
-            timeEstimatorService.CalculateTime(packages, vehicles);
+            //Console.WriteLine("Estimating delivery time");
+            timeEstimatorService.CalculateTime(new List<Package>(packages), vehicles);
             foreach (var package in packages)
             {
-                Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime} {package.VehicleId}");
+                Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime}");
+                //Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime} {package.VehicleId}");
             }
         }
     }
