@@ -14,22 +14,22 @@ internal class Program
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
-        var lineOne = Console.ReadLine();
-        if (lineOne == null)
+        var packageMetadataLine = Console.ReadLine();
+        if (packageMetadataLine == null)
         {
-            Console.WriteLine("Invalid line one");
+            Console.WriteLine("Invalid package metadata line");
             return;
         }
 
-        var lineOneItems = lineOne.Split(" ");
-        if (lineOneItems.Length < 2)
+        var packageMetadata = packageMetadataLine.Split(" ");
+        if (packageMetadata.Length < 2)
         {
-            Console.WriteLine("Invalid line one items");
+            Console.WriteLine("Invalid package metadata");
             return;
         }
 
-        decimal baseCost = decimal.Parse(lineOneItems[0]);
-        int packageCount = int.Parse(lineOneItems[1]);
+        decimal baseCost = decimal.Parse(packageMetadata[0]);
+        int packageCount = int.Parse(packageMetadata[1]);
 
         var packages = ReadPackages(packageCount);
         if (!packages.Any())
@@ -38,6 +38,8 @@ internal class Program
             return;
         }
 
+        var vehicles = ReadVehicles();
+
         var services = new ServiceCollection();
         RegisterServices(services, configuration);
 
@@ -45,7 +47,7 @@ internal class Program
         var costSettings = provider.GetRequiredService<IOptions<CostSettings>>().Value;
         costSettings.BaseCost = baseCost;
 
-        BeginCostEstimation(provider, packages);
+        ProcessEstimations(provider, packages, vehicles);
 
         Console.Read();
     }
@@ -63,7 +65,7 @@ internal class Program
             }
 
             var lineItems = line.Split(' ');
-            if (line.Length < 3)
+            if (line.Length < 4)
             {
                 Console.WriteLine("Invalid package line items");
                 return packages;
@@ -74,27 +76,73 @@ internal class Program
                 Id = lineItems[0],
                 Weight = decimal.Parse(lineItems[1]),
                 Distance = decimal.Parse(lineItems[2]),
-                OfferCode = lineItems.Length > 3 ? lineItems[3] : string.Empty
+                OfferCode = lineItems[3]
             });
         }
         return packages;
     }
+    private static List<Vehicle> ReadVehicles()
+    {
+        var vehicles = new List<Vehicle>();
+        var vehicleMetadataLine = Console.ReadLine();
+        if (vehicleMetadataLine == null)
+        {
+            Console.WriteLine("Invalid vehicle metadata line");
+            return vehicles;
+        }
 
-    private static void RegisterServices(ServiceCollection services, IConfiguration configuration) {
+        var vehicleMetadata = vehicleMetadataLine.Split(" ");
+        if (vehicleMetadata.Length < 3)
+        {
+            Console.WriteLine("Invalid vehicle metadata");
+            return vehicles;
+        }
+
+        var vehicleCount = int.Parse(vehicleMetadata[0]);
+        var vehicleMaxSpeed = int.Parse(vehicleMetadata[1]);
+        var vehicleMaxCapacity = int.Parse(vehicleMetadata[2]);
+
+        for (int i = 0; i < vehicleCount; i++)
+        {
+            vehicles.Add(new Vehicle
+            {
+                Id = i+1,
+                MaxCapacity = vehicleMaxCapacity,
+                MaxSpeed = vehicleMaxSpeed,
+                NextAvailableTime = 0m,
+            });
+        }
+        return vehicles;
+    }
+
+    private static void RegisterServices(ServiceCollection services, IConfiguration configuration)
+    {
         services.Configure<CostSettings>(configuration.GetSection("Costs"));
         services.Configure<OfferSettings>(configuration.GetSection("Offers"));
         services.AddSingleton<IOfferService, OfferService>();
         services.AddTransient<ICostEstimatorService, CostEstimatorService>();
+        services.AddTransient<ITimeEstimatorService, TimeEstimatorService>();
     }
 
-    private static void BeginCostEstimation(ServiceProvider provider, List<Package> packages)
+    private static void ProcessEstimations(ServiceProvider provider, List<Package> packages, List<Vehicle> vehicles)
     {
         Console.WriteLine("Estimating delivery cost");
         var costEstimatorService = provider.GetRequiredService<ICostEstimatorService>();
         foreach (var package in packages)
         {
-            var packageCostResult = costEstimatorService.CalculateCost(package);
-            Console.WriteLine($"{packageCostResult.Id} {packageCostResult.Discount} {packageCostResult.TotalCost}");
+            costEstimatorService.CalculateCost(package);
+            Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost}");
+        }
+
+        if (vehicles.Any())
+        {
+            var timeEstimatorService = provider.GetRequiredService<ITimeEstimatorService>();
+            Console.WriteLine("Estimating delivery time");
+            timeEstimatorService.CalculateTime(packages, vehicles);
+            foreach (var package in packages)
+            {
+                Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime} {package.VehicleId}");
+            }
         }
     }
 }

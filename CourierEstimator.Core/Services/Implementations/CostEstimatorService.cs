@@ -14,9 +14,8 @@ namespace CourierEstimator.Core.Services.Implementations
             _costSettings = costSettings.Value;
         }
 
-        public PackageCostResult CalculateCost(Package package)
+        public void CalculateCost(Package package)
         {
-
             var deliveryCost = _costSettings.BaseCost 
                 + (package.Weight * _costSettings.CostPerKg) 
                 + (package.Distance * _costSettings.CostPerKm);
@@ -31,13 +30,9 @@ namespace CourierEstimator.Core.Services.Implementations
                 }
             }
 
-            return new PackageCostResult
-            {
-                Id = package.Id,
-                DeliveryCost = deliveryCost,
-                Discount = discount,
-                TotalCost = deliveryCost - discount
-            };
+            package.DeliveryCost = deliveryCost;
+            package.Discount = discount;
+            package.TotalCost = deliveryCost - discount;
         }
     }
 }
