@@ -8,7 +8,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //Console.WriteLine("Starting the app");
+        //Starting the app with importing offers and base costs
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -121,29 +121,27 @@ internal class Program
         services.Configure<CostSettings>(configuration.GetSection("Costs"));
         services.Configure<OfferSettings>(configuration.GetSection("Offers"));
         services.AddSingleton<IOfferService, OfferService>();
-        services.AddTransient<ICostEstimatorService, CostEstimatorService>();
-        services.AddTransient<ITimeEstimatorService, TimeEstimatorService>();
+        services.AddSingleton<ICostEstimatorService, CostEstimatorService>();
+        services.AddSingleton<ITimeEstimatorService, TimeEstimatorService>();
     }
 
     private static void ProcessEstimations(ServiceProvider provider, List<Package> packages, List<Vehicle> vehicles)
     {
-        //Console.WriteLine("Estimating delivery cost");
+        //Estimating delivery cost
         var costEstimatorService = provider.GetRequiredService<ICostEstimatorService>();
         foreach (var package in packages)
         {
             costEstimatorService.CalculateCost(package);
-            //Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost}");
         }
 
         if (vehicles.Any())
         {
             var timeEstimatorService = provider.GetRequiredService<ITimeEstimatorService>();
-            //Console.WriteLine("Estimating delivery time");
+            //Estimating delivery time
             timeEstimatorService.CalculateTime(packages, vehicles);
             foreach (var package in packages)
             {
                 Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime}");
-                //Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime} {package.VehicleId}");
             }
         }
     }

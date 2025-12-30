@@ -10,8 +10,7 @@ namespace CourierEstimator.Test.Services.Implementations
         private readonly ITimeEstimatorService _timeEstimatorService;
         public TimeEstimatorServiceFacts()
         {
-            var mockOfferService = new Mock<IOfferService>();
-            _timeEstimatorService = new TimeEstimatorService(mockOfferService.Object);
+            _timeEstimatorService = new TimeEstimatorService();
         }
 
 
