@@ -139,7 +139,7 @@ internal class Program
         {
             var timeEstimatorService = provider.GetRequiredService<ITimeEstimatorService>();
             //Console.WriteLine("Estimating delivery time");
-            timeEstimatorService.CalculateTime(new List<Package>(packages), vehicles);
+            timeEstimatorService.CalculateTime(packages, vehicles);
             foreach (var package in packages)
             {
                 Console.WriteLine($"{package.Id} {package.Discount} {package.TotalCost} {package.DeliveryTime}");

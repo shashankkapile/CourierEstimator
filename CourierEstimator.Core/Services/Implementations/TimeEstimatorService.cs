@@ -14,17 +14,16 @@ namespace CourierEstimator.Core.Services.Implementations
 
         public void CalculateTime(List<Package> packages, List<Vehicle> vehicles)
         {
-            while (packages.Count > 0)
+            var pendingPackages = new List<Package>(packages);
+            while (pendingPackages.Count > 0)
             {
-                var vehicle = vehicles
-                    .OrderBy(v => v.NextAvailableTime)
-                    .First();
+                var vehicle = vehicles.OrderBy(v => v.NextAvailableTime).First();
 
                 var capacity = vehicle.MaxCapacity;
 
-                var dp = Tabulation(packages, capacity);
+                var dp = Tabulation(pendingPackages, capacity);
 
-                var pickedPackages = GetPickedPackages(dp, packages, capacity);
+                var pickedPackages = GetPickedPackages(dp, pendingPackages, capacity);
 
                 var tripStartTime = vehicle.NextAvailableTime;
                 var maxTripTime = 0m;
@@ -38,10 +37,10 @@ namespace CourierEstimator.Core.Services.Implementations
 
                     maxTripTime = Math.Max(maxTripTime, travelTime);
                 }
-
-                vehicle.NextAvailableTime += RoundHelper.Round(vehicle.NextAvailableTime + 2 * RoundHelper.Round(maxTripTime));
+                var returnTime = 2 * RoundHelper.Round(maxTripTime);
+                vehicle.NextAvailableTime = RoundHelper.Round(vehicle.NextAvailableTime + returnTime);
                 //Console.WriteLine("Next--> " + vehicle.NextAvailableTime);
-                packages.RemoveAll(p => pickedPackages.Contains(p));
+                pendingPackages.RemoveAll(p => pickedPackages.Contains(p));
             }
         }
 
@@ -73,7 +72,7 @@ namespace CourierEstimator.Core.Services.Implementations
 
                 for (int w = 0; w <= cap; w++)
                 {
-                    var skip = dp[i - 1, w];
+                    var nonPick = dp[i - 1, w];
                     TabulationResult pick = null;
 
                     if (pkg.Weight <= w)
@@ -87,7 +86,7 @@ namespace CourierEstimator.Core.Services.Implementations
                         };
                     }
 
-                    dp[i, w] = pick == null ? skip : Better(pick, skip);
+                    dp[i, w] = pick == null ? nonPick : Better(pick, nonPick);
                 }
             }
             return dp;

@@ -4,7 +4,7 @@
     {
         public static decimal Round(decimal value)
         {
-            return (decimal)(Math.Truncate(value * 100) / 100);
+            return Math.Truncate(value * 100) / 100;
         }
     }
 }
