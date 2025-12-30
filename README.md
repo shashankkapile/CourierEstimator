@@ -16,7 +16,6 @@ Inputs offers, packages and vehicles.
 - **Time Estimation**  
   Uses pick non-pick DP tabulation method to find all possibilities to pick best combination based below conditions
   - Weights, vehicle capacity and shorter distance 
-	- 
 - **Offers**  
   Configurable offers with min/max weight and distance ranges, plus discount percentages.
 
