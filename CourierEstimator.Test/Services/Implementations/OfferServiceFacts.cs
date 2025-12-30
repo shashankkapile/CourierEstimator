@@ -80,6 +80,5 @@ namespace CourierEstimator.Test.Services.Implementations
             var result = service.GetOfferByCode("MyCode");
             Assert.Null(result);
         }
-
     }
 }

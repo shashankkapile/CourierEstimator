@@ -44,7 +44,6 @@ namespace CourierEstimator.Core.Services.Implementations
             }
         }
 
-    
         private TabulationResult Better(TabulationResult a, TabulationResult b)
         {
             if (a.PackageCount != b.PackageCount)
@@ -55,7 +54,6 @@ namespace CourierEstimator.Core.Services.Implementations
 
             return a.MaxDistance < b.MaxDistance ? a : b;
         }
-
 
         private TabulationResult[,] Tabulation(List<Package> packages, decimal capacity)
         {

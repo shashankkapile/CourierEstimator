@@ -57,3 +57,4 @@ nunit-*.xml
 /.vs/CourierEstimator/v17
 /.vs/ProjectEvaluation
 /.vs/CourierEstimator/config/applicationhost.config
+/.vs/slnx.sqlite

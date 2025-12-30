@@ -2,7 +2,7 @@
 
 namespace CourierEstimator.Test.Helpers
 {
-    public class RoundHleperFacts
+    public class RoundHelperFacts
     {
         public class RoundHelperTests
         {
@@ -20,6 +20,5 @@ namespace CourierEstimator.Test.Helpers
                 Assert.Equal(expected, result);
             }
         }
-
     }
 }

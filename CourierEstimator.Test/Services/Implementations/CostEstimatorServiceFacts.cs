@@ -65,7 +65,6 @@ namespace CourierEstimator.Test.Services.Implementations
             var deliveryCost = 50 + 20 * 5 + 30 * 2;
             var discount = deliveryCost * 0.10m;
             var totalCost = deliveryCost - discount;
-
             Assert.Equal(deliveryCost, package.DeliveryCost);
             Assert.Equal((int)discount, package.Discount);
             Assert.Equal((int)totalCost, package.TotalCost);

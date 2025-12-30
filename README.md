@@ -16,7 +16,7 @@ Inputs offers, packages and vehicles.
 - **Time Estimation**  
   Uses pick non-pick DP tabulation method to find all possibilities to pick best combination based below conditions
   - Weights, vehicle capacity and shorter distance 
-  - 
+	- 
 - **Offers**  
   Configurable offers with min/max weight and distance ranges, plus discount percentages.
 
@@ -41,7 +41,7 @@ Unit tests are written with xUnit and Moq:
 - OfferServiceFacts: Tests valid/invalid offers.
 - CostEstimatorServiceFacts: Tests cost calculation with and without offers.
 - TimeEstimatorServiceFacts: Ensures correct scheduling and delivery times for various scenarios.
-- RoundHelperTests: Tets helper function
+- RoundHelperTests: Tests helper function
 
 ---
 
